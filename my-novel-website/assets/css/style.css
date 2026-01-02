@@ -1,0 +1,297 @@
+/* =========================
+   RESET & BASE
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    background: #f5f1ee;
+    color: #3e3a37;
+    line-height: 1.7;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+/* =========================
+   HEADER
+========================= */
+.header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.coffee-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.header h1 {
+    font-family: 'Crimson Text', serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.tagline {
+    margin-top: 0.75rem;
+    font-style: italic;
+    color: #6f6a65;
+}
+
+/* =========================
+   PROFILE
+========================= */
+.profile {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 4rem;
+}
+
+.profile-pic {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: #d7ccc8;
+    padding: 0.5rem;
+}
+
+.profile-info h2 {
+    font-family: 'Crimson Text', serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.profile-info p {
+    color: #5e5a56;
+    margin-bottom: 1.2rem;
+}
+
+/* =========================
+   STATS
+========================= */
+.stats {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.stat {
+    background: #ebe4df;
+    padding: 0.8rem 1.2rem;
+    border-radius: 12px;
+    text-align: center;
+    min-width: 110px;
+}
+
+.stat .number {
+    display: block;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #5d4037;
+}
+
+.stat .label {
+    font-size: 0.8rem;
+    color: #7a726c;
+}
+
+/* =========================
+   PROJECTS
+========================= */
+.projects {
+    margin-bottom: 4rem;
+}
+
+.projects h2 {
+    font-family: 'Crimson Text', serif;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.novel-card {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.novel-card h3 {
+    font-family: 'Crimson Text', serif;
+    font-size: 1.7rem;
+    margin-bottom: 0.8rem;
+}
+
+/* =========================
+   GENRE TAGS
+========================= */
+.genre-tags {
+    margin-bottom: 1rem;
+}
+
+.genre-tag {
+    display: inline-block;
+    background: #ede7e3;
+    color: #6d4c41;
+    padding: 0.3rem 0.7rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    margin-right: 0.5rem;
+}
+
+/* =========================
+   SYNOPSIS
+========================= */
+.synopsis {
+    color: #5e5a56;
+    margin-bottom: 1.8rem;
+}
+
+/* =========================
+   PROGRESS BAR
+========================= */
+.progress-section {
+    margin-bottom: 1.8rem;
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+    color: #6f6a65;
+}
+
+.progress-bar {
+    background: #e0d7d2;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 8px;
+}
+
+.progress-fill {
+    background: #8d6e63;
+    height: 100%;
+    transition: width 0.5s ease;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn {
+    text-decoration: none;
+    background: #6d4c41;
+    color: #ffffff;
+    padding: 0.6rem 1.2rem;
+    border-radius: 25px;
+    font-size: 0.85rem;
+    transition: background 0.3s ease;
+}
+
+.btn:hover {
+    background: #5d4037;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid #6d4c41;
+    color: #6d4c41;
+}
+
+.btn-outline:hover {
+    background: #ede7e3;
+}
+
+.btn-disabled {
+    background: #bdbdbd;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* =========================
+   UPDATES
+========================= */
+.updates {
+    margin-bottom: 4rem;
+}
+
+.updates h2 {
+    font-family: 'Crimson Text', serif;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.update-card {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 15px;
+    margin-bottom: 1rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+}
+
+.update-card h4 {
+    font-size: 1rem;
+    margin-bottom: 0.4rem;
+}
+
+.update-card p {
+    font-size: 0.9rem;
+    color: #5e5a56;
+}
+
+.update-date {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: #8d8a86;
+    font-style: italic;
+}
+
+/* =========================
+   FOOTER
+========================= */
+footer {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #7a726c;
+    margin-top: 4rem;
+}
+
+footer p {
+    margin-bottom: 0.4rem;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+    .profile {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .stats {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .actions {
+        justify-content: center;
+    }
+}
