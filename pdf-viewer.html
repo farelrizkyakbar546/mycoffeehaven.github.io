@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Viewer - Aroma Kopi, Rasa Kenangan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #1A120B;
+            color: #F3E9DC;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: #2D1B0E;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #A67B5B;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .controls button {
+            background: #A67B5B;
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .controls button:hover {
+            background: #D4AF37;
+            transform: translateY(-2px);
+        }
+        
+        .pdf-container {
+            flex: 1;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        #pdfViewer {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            height: 100%;
+        }
+        
+        .coffee-loader {
+            width: 60px;
+            height: 60px;
+            position: relative;
+        }
+        
+        .coffee-cup-loader {
+            width: 60px;
+            height: 40px;
+            background: linear-gradient(135deg, #4A3520, #2D1B0E);
+            border-radius: 0 0 30px 30px;
+            position: relative;
+        }
+        
+        .coffee-cup-loader::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 0;
+            width: 60px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4A3520, #2D1B0E);
+        }
+        
+        .steam-loader {
+            position: absolute;
+            width: 8px;
+            height: 30px;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.3), transparent);
+            border-radius: 50%;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: steam-rise 1.5s infinite ease-in-out;
+        }
+        
+        .steam-loader:nth-child(2) {
+            left: 40%;
+            animation-delay: 0.5s;
+        }
+        
+        .steam-loader:nth-child(3) {
+            left: 60%;
+            animation-delay: 1s;
+        }
+        
+        @keyframes steam-rise {
+            0% { 
+                transform: translateX(-50%) translateY(0) scale(1);
+                opacity: 0;
+            }
+            50% { 
+                opacity: 0.6;
+            }
+            100% { 
+                transform: translateX(-50%) translateY(-30px) scale(1.2);
+                opacity: 0;
+            }
+        }
+        
+        .footer {
+            background: #2D1B0E;
+            padding: 1rem 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #C9B8A4;
+            border-top: 1px solid #A67B5B;
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .controls {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .pdf-container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <span>☕</span>
+            <span>Aroma Kopi - PDF Viewer</span>
+        </div>
+        <div class="controls">
+            <button onclick="goBack()">
+                ← Kembali
+            </button>
+            <button onclick="downloadPdf()">
+                ⬇ Download
+            </button>
+            <button onclick="printPdf()">
+                🖨️ Print
+            </button>
+            <button onclick="toggleFullscreen()">
+                ⛶ Fullscreen
+            </button>
+        </div>
+    </div>
+    
+    <div class="pdf-container">
+        <div class="loading" id="loading">
+            <div class="coffee-loader">
+                <div class="coffee-cup-loader"></div>
+                <div class="steam-loader"></div>
+                <div class="steam-loader"></div>
+                <div class="steam-loader"></div>
+            </div>
+            <p>Memuat PDF, harap tunggu...</p>
+        </div>
+        <iframe id="pdfViewer" style="display: none;"></iframe>
+    </div>
+    
+    <div class="footer">
+        © 2026 Aroma Kopi, Rasa Kenangan. Dibuat dengan ❤️ dan ☕ oleh Muhamad Farel Rizky Akbar
+    </div>
+
+    <script>
+        // Get PDF URL from query parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const pdfUrl = urlParams.get('file') || 'drafts/aroma_kopi_rasa_kenangan_bab1.pdf';
+        
+        // Load PDF
+        const pdfViewer = document.getElementById('pdfViewer');
+        const loading = document.getElementById('loading');
+        
+        // Set PDF source
+        pdfViewer.src = pdfUrl + '#view=FitH&toolbar=1&navpanes=0';
+        
+        // Hide loading when PDF is loaded
+        pdfViewer.onload = function() {
+            loading.style.display = 'none';
+            pdfViewer.style.display = 'block';
+            
+            // Track reading in localStorage
+            const chapterMatch = pdfUrl.match(/bab(\d+)/i);
+            if (chapterMatch) {
+                const readChapters = JSON.parse(localStorage.getItem('read_chapters') || '[]');
+                const chapterNum = parseInt(chapterMatch[1]);
+                
+                if (!readChapters.includes(chapterNum)) {
+                    readChapters.push(chapterNum);
+                    localStorage.setItem('read_chapters', JSON.stringify(readChapters));
+                    
+                    // Add reading timestamp
+                    const readTimes = JSON.parse(localStorage.getItem('read_times') || '{}');
+                    readTimes[chapterNum] = new Date().toISOString();
+                    localStorage.setItem('read_times', JSON.stringify(readTimes));
+                }
+            }
+        };
+        
+        // Functions
+        function goBack() {
+            window.history.back();
+        }
+        
+        function downloadPdf() {
+            const link = document.createElement('a');
+            link.href = pdfUrl;
+            link.download = pdfUrl.split('/').pop();
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        function printPdf() {
+            pdfViewer.contentWindow.print();
+        }
+        
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                pdfViewer.requestFullscreen().catch(err => {
+                    console.log(`Error attempting to enable fullscreen: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                goBack();
+            }
+            
+            if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+                e.preventDefault();
+                printPdf();
+            }
+            
+            if (e.key === 'F11') {
+                e.preventDefault();
+                toggleFullscreen();
+            }
+        });
+        
+        // Update document title based on PDF
+        const pdfName = pdfUrl.split('/').pop().replace('.pdf', '').replace(/_/g, ' ');
+        document.title = pdfName + ' - Aroma Kopi PDF Viewer';
+    </script>
+</body>
+</html>
